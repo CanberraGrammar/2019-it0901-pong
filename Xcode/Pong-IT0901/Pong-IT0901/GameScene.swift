@@ -9,7 +9,11 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    let BallCategory: UInt32 = 0x1 << 0
+    let TopCategory: UInt32 = 0x1 << 1
+    let BottomCategory: UInt32 = 0x1 << 2
     
     var topPaddle: SKSpriteNode?
     var fingerOnTopPaddle: Bool = false
@@ -37,20 +41,25 @@ class GameScene: SKScene {
         ball!.physicsBody!.angularDamping = 0
         ball!.physicsBody!.allowsRotation = false
         ball!.physicsBody!.applyImpulse(CGVector(dx: 8.0, dy: 8.0))
+        ball!.physicsBody!.categoryBitMask = BallCategory
+        ball!.physicsBody!.contactTestBitMask = TopCategory | BottomCategory
         
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         
         let topNode = SKNode()
         let topLeftPoint = CGPoint(x: -(self.size.width / 2), y: self.size.height / 2)
         let topRightPoint = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         topNode.physicsBody = SKPhysicsBody(edgeFrom: topLeftPoint, to: topRightPoint)
+        topNode.physicsBody!.categoryBitMask = TopCategory
         self.addChild(topNode)
         
         let bottomNode = SKNode()
         let bottomLeftPoint = CGPoint(x: -(self.size.width / 2), y: -(self.size.height / 2))
         let bottomRightPoint = CGPoint(x: self.size.width / 2, y: -(self.size.height / 2))
         bottomNode.physicsBody = SKPhysicsBody(edgeFrom: bottomLeftPoint, to: bottomRightPoint)
+        bottomNode.physicsBody!.categoryBitMask = BottomCategory
         self.addChild(bottomNode)
         
     }
