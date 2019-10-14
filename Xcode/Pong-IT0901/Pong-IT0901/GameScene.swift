@@ -22,6 +22,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var fingerOnBottomPaddle: Bool = false
     
     var ball: SKSpriteNode?
+    
+    var gameRunning = false
         
     override func didMove(to view: SKView) {
         
@@ -40,7 +42,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball!.physicsBody!.linearDamping = 0
         ball!.physicsBody!.angularDamping = 0
         ball!.physicsBody!.allowsRotation = false
-        ball!.physicsBody!.applyImpulse(CGVector(dx: 8.0, dy: 8.0))
         ball!.physicsBody!.categoryBitMask = BallCategory
         ball!.physicsBody!.contactTestBitMask = TopCategory | BottomCategory
         
@@ -77,6 +78,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         else if touchedNode == bottomPaddle {
             fingerOnBottomPaddle = true
+        }
+        
+        if gameRunning == false {
+            
+            ball!.physicsBody!.applyImpulse(CGVector(dx: 8.0, dy: 8.0))
+
+            gameRunning = true
+            
         }
         
     }
@@ -122,6 +131,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         else if fingerOnBottomPaddle {
             fingerOnBottomPaddle = false
+        }
+        
+    }
+    
+    func resetGame() {
+        
+        // Put the ball back in the centre of the screen
+        
+        // Reset the position of the paddles
+        
+    }
+    
+    func gameOver() {
+        
+        // Pause the game
+        view!.isPaused = true
+        
+        // Show an alert saying "Game Over" - you need a UIAlertController
+        let gameOverAlert = UIAlertController(title: "Game Over", message: nil, preferredStyle: .alert)
+        let gameOverAction = UIAlertAction(title: "Okay", style: .default) { (alertAction) in
+            
+            // Write the code to run when the button is tapped
+            self.resetGame()
+            
+        }
+        
+        gameOverAlert.addAction(gameOverAction)
+        
+        view!.window!.rootViewController!.present(gameOverAlert, animated: true, completion: nil)
+        
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        if (contact.bodyA.categoryBitMask == BottomCategory) || (contact.bodyB.categoryBitMask == BottomCategory) {
+            
+            print("Bottom collision")
+            
+            gameOver()
+            
+        }
+        
+        else if (contact.bodyA.categoryBitMask == TopCategory) || (contact.bodyB.categoryBitMask == TopCategory) {
+            
+            print("Top collision")
+            
+            gameOver()
+            
         }
         
     }
