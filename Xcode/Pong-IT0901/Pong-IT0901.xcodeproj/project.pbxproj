@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D134CA9C2357F2E300CAC4DA /* SmokeEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = D134CA9B2357F2E300CAC4DA /* SmokeEmitter.sks */; };
 		D18C582D2325CF3A00D4A968 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C582C2325CF3A00D4A968 /* AppDelegate.swift */; };
 		D18C582F2325CF3A00D4A968 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D18C582E2325CF3A00D4A968 /* GameScene.sks */; };
 		D18C58312325CF3A00D4A968 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D18C58302325CF3A00D4A968 /* Actions.sks */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D134CA9B2357F2E300CAC4DA /* SmokeEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SmokeEmitter.sks; sourceTree = "<group>"; };
 		D18C58292325CF3A00D4A968 /* Pong-IT0901.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pong-IT0901.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D18C582C2325CF3A00D4A968 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D18C582E2325CF3A00D4A968 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				D18C58392325CF3C00D4A968 /* Assets.xcassets */,
 				D18C583B2325CF3C00D4A968 /* LaunchScreen.storyboard */,
 				D18C583E2325CF3C00D4A968 /* Info.plist */,
+				D134CA9B2357F2E300CAC4DA /* SmokeEmitter.sks */,
 			);
 			path = "Pong-IT0901";
 			sourceTree = "<group>";
@@ -133,6 +136,7 @@
 			files = (
 				D18C58382325CF3A00D4A968 /* Main.storyboard in Resources */,
 				D18C582F2325CF3A00D4A968 /* GameScene.sks in Resources */,
+				D134CA9C2357F2E300CAC4DA /* SmokeEmitter.sks in Resources */,
 				D18C583A2325CF3C00D4A968 /* Assets.xcassets in Resources */,
 				D18C583D2325CF3C00D4A968 /* LaunchScreen.storyboard in Resources */,
 				D18C58312325CF3A00D4A968 /* Actions.sks in Resources */,

@@ -17,13 +17,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var topPaddle: SKSpriteNode?
     var fingerOnTopPaddle: Bool = false
+    var topScoreLabel: SKLabelNode?
     
     var bottomPaddle: SKSpriteNode?
     var fingerOnBottomPaddle: Bool = false
+    var bottomScoreLabel: SKLabelNode?
     
     var ball: SKSpriteNode?
     
     var gameRunning = false
+    
+    var topScore = 0
+    var bottomScore = 0
         
     override func didMove(to view: SKView) {
         
@@ -31,9 +36,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         topPaddle!.physicsBody = SKPhysicsBody(rectangleOf: topPaddle!.frame.size)
         topPaddle!.physicsBody!.isDynamic = false
         
+        topScoreLabel = childNode(withName: "topScoreLabel") as? SKLabelNode
+        
         bottomPaddle = childNode(withName: "bottomPaddle") as? SKSpriteNode
         bottomPaddle!.physicsBody = SKPhysicsBody(rectangleOf: bottomPaddle!.frame.size)
         bottomPaddle!.physicsBody!.isDynamic = false
+        
+        bottomScoreLabel = childNode(withName: "bottomScoreLabel") as? SKLabelNode
         
         ball = childNode(withName: "ball") as? SKSpriteNode
         ball!.physicsBody = SKPhysicsBody(rectangleOf: ball!.frame.size)
@@ -44,6 +53,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball!.physicsBody!.allowsRotation = false
         ball!.physicsBody!.categoryBitMask = BallCategory
         ball!.physicsBody!.contactTestBitMask = TopCategory | BottomCategory
+        
+        let smokeEmitterNode = SKEmitterNode(fileNamed: "SmokeEmitter")
+        smokeEmitterNode!.targetNode = self
+        ball!.addChild(smokeEmitterNode!)
         
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         self.physicsWorld.contactDelegate = self
@@ -79,10 +92,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else if touchedNode == bottomPaddle {
             fingerOnBottomPaddle = true
         }
-        
+                
         if gameRunning == false {
             
-            ball!.physicsBody!.applyImpulse(CGVector(dx: 8.0, dy: 8.0))
+            // Generate a random number between 0 and 1 (inclusive)
+            let randomNumber = arc4random_uniform(2)
+            
+            if randomNumber == 0 {
+            
+                ball!.physicsBody!.applyImpulse(CGVector(dx: 8.0, dy: 8.0))
+                
+            }
+            
+            else {
+                
+                ball!.physicsBody!.applyImpulse(CGVector(dx: -8.0, dy: -8.0))
+                
+            }
 
             gameRunning = true
             
@@ -138,8 +164,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func resetGame() {
         
         // Put the ball back in the centre of the screen
+        ball!.position.x = 0
+        ball!.position.y = 0
         
         // Reset the position of the paddles
+        topPaddle!.position.x = 0
+        bottomPaddle!.position.x = 0
+        
+        // Stop the ball from moving
+        ball!.physicsBody!.velocity = CGVector(dx: 0, dy: 0)
+        gameRunning = false
+        
+        // Unpause the view
+        view!.isPaused = false
         
     }
     
@@ -169,6 +206,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             print("Bottom collision")
             
+            topScore += 1
+            // Update the top score label
+            topScoreLabel!.text = String(topScore)
+            
             gameOver()
             
         }
@@ -176,6 +217,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else if (contact.bodyA.categoryBitMask == TopCategory) || (contact.bodyB.categoryBitMask == TopCategory) {
             
             print("Top collision")
+            
+            bottomScore += 1
+            // Update the bottom score label
+            bottomScoreLabel!.text = String(bottomScore)
             
             gameOver()
             
